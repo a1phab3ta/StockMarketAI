@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic HTML Page</title>
+</head>
+<body>
+    <header>
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('refresh_model') }}">Refresh Model</a></li>
+            <li><a href="{{ url_for('current_portfolio') }}">Current Portfolio</a></li>
+            <li><a href="{{ url_for('top_bearish') }}">Top Bearish</a></li>
+            <li><a href="{{ url_for('top_bullish') }}">Top Bullish</a></li>
+          </ul>
+        </nav>
+    </header>
+</body>
+</html>

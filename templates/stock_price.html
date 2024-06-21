@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Stock Tickers</title>
+  <title>Stock Price</title>
 </head>
 <body>
     <header>
@@ -12,14 +12,11 @@
             <li><a href="{{ url_for('current_portfolio') }}">Current Portfolio</a></li>
             <li><a href="{{ url_for('top_bearish') }}">Top Bearish</a></li>
             <li><a href="{{ url_for('top_bullish') }}">Top Bullish</a></li>
+            <li><a href="{{ url_for('stock_tickers') }}">Stock Tickers</a></li>
           </ul>
         </nav>
     </header>
-    <h1>Stock Tickers</h1>
-    <ul>
-      {% for ticker in tickers %}
-        <li><a href=" {{ url_for('stock_price', ticker=ticker)}}">{{ ticker }}</a></li>
-      {% endfor %}
-    </ul>
+    <h1>Stock Price for {{ ticker }}</h1>
+    <p>The current price of {{ ticker }} is ${{ price }}.</p>
 </body>
 </html>

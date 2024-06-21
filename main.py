@@ -1,11 +1,13 @@
 from flask import Flask, render_template
 import requests
 from bs4 import BeautifulSoup
+import sqlite3
+
 
 app = Flask(__name__)
 
 def get_stock_tickers():
-    url = 'https://stockanalysis.com/stocks/'  # Replace with the actual URL
+    url = 'https://stockanalysis.com/stocks/'  
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -15,19 +17,10 @@ def get_stock_tickers():
         if a_tag:
             tickers.append(a_tag.text.strip())
 
-    return tickers'''
-
-def get_stock_tickers():
-    with open("./data/stockData.csv", "r") as file:
-        metadata = file.read().splitlines()[1:]
-        file.close()
-    tickers = []
-    for i in metadata:
-        i = i.split(",")
-        tickers.append(i[0])
     return tickers
 
-def get_stock_prince(ticker):
+
+def get_stock_price(ticker):
     if "^" in ticker:
         ticker = ticker.replace("^", "")
     url = f'https://stockanalysis.com/stocks/{ticker}/'
@@ -70,7 +63,15 @@ def stock_tickers():
 @app.route('/stock_price/<string:ticker>')
 def stock_price(ticker):
     ticker = ticker.upper()
-    price = get_stock_prince(ticker)
+    price = get_stock_price(ticker)
     return render_template('stock_price.html', ticker=ticker, price=price)
+
+
 if __name__ == '__main__':
+    con = sqlite3.connect('myportfolio.db') 
+    cur=con.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS portfolio 
+                (ticker text NOT NULL,
+                 shares text NOT NULL)""")
+    print("Successfully connected to database!")
     app.run(debug=True)

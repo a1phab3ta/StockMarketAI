@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Tickers</title>
+</head>
+<body>
+    <header>
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('main') }}">Home</a></li>
+            <li><a href="{{ url_for('refresh_model') }}">Refresh Model</a></li>
+            <li><a href="{{ url_for('current_portfolio') }}">Current Portfolio</a></li>
+            <li><a href="{{ url_for('top_bearish') }}">Top Bearish</a></li>
+            <li><a href="{{ url_for('top_bullish') }}">Top Bullish</a></li>
+          </ul>
+        </nav>
+    </header>
+    <h1>Stock Tickers</h1>
+    <ul>
+      {% for ticker in tickers %}
+        <li>{{ ticker }}</li>
+      {% endfor %}
+    </ul>
+</body>
+</html>

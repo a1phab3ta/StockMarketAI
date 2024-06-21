@@ -5,13 +5,12 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 
 def get_stock_tickers():
-    url = 'https://stockanalysis.com/stocks/'  # Replace with the actual URL
+    url = 'https://stockanalysis.com/stocks/'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     tickers = []
     for td in soup.find_all('td', class_='svelte-1yyv6eq'):
-        # Check if the <td> contains an <a> tag
         a_tag = td.find('a')
         if a_tag:
             tickers.append(a_tag.text.strip())

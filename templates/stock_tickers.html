@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>Stock Tickers</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 <body>
     <header>
@@ -18,7 +20,7 @@
     <h1>Stock Tickers</h1>
     <ul>
       {% for ticker in tickers %}
-        <li><a href=" {{ url_for('stock_price', ticker=ticker)}}">{{ ticker }}</a></li>
+        <li><a href=" {{ url_for('stock_info', ticker=ticker)}}">{{ ticker }}</a></li>
       {% endfor %}
     </ul>
 </body>

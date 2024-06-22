@@ -21,17 +21,19 @@
             <tr>
                 <th>Ticker</th>
                 <th># of Shares</th>
+                <th>Value</th>
             </tr>
         </thead>
         <tbody>
             {% for record in data %}
                 <tr>
-                    <td>{{ record[0] }}</td> 
+                    <td><a href = "stock_info/{{ record[0] }}">{{ record[0] }}</a></td> 
                     <td>{{ record[1] }}</td>
+                    <td>${{ record[2] }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <h2 style="padding: 4ch;">Total Value of Portfolio: <span style="color: lime;">${{ tot_val }}</span></h2>
 </body>
 </html>
-    

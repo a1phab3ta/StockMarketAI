@@ -7,18 +7,24 @@ import sqlite3
 app = Flask(__name__)
 
 def get_stock_tickers():
-    url = 'https://stockanalysis.com/stocks/'  
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-
-    tickers = []
-    for td in soup.find_all('td', class_='svelte-1yyv6eq'):
-        a_tag = td.find('a')
-        if a_tag:
-            tickers.append(a_tag.text.strip())
-
+    with open('./data/stockData.csv') as data:
+        data_ = data.readlines()
+        
+        tickers = []
+        for line in data_[1:]:
+            tickers.append(line.strip().split(',')[0])
+        data.close()
     return tickers
 
+def get_stock_info(ticker):
+    with open('./data/stockData.csv') as file:
+        data = file.readlines()
+        data = data[1:]
+        data = [line.strip().split(',') for line in data]
+        file.close()
+    for i in data:
+        if i[0] == ticker:
+            return i
 
 def get_stock_price(ticker):
     if "^" in ticker:
@@ -51,7 +57,14 @@ def current_portfolio():
     shares = []
     cur.execute("SELECT * FROM portfolio")
     data = cur.fetchall()
-    return render_template('current_portfolio.html', data = data)
+    data = [list(i) for i in data]
+    for i in range(len(data)):
+        value = get_stock_price(data[i][0])
+        data[i].append(float(value)*float(data[i][1]))
+    tot_val = 0
+    for i in data:
+        tot_val+=i[2]
+    return render_template('current_portfolio.html', data = data, tot_val=tot_val)
 
 @app.route('/top_bearish')
 def top_bearish():
@@ -66,11 +79,12 @@ def stock_tickers():
     tickers = get_stock_tickers()
     return render_template('stock_tickers.html', tickers=tickers)
 
-@app.route('/stock_price/<string:ticker>')
-def stock_price(ticker):
+@app.route('/stock_info/<string:ticker>')
+def stock_info(ticker):
     ticker = ticker.upper()
-    price = get_stock_price(ticker)
-    return render_template('stock_price.html', ticker=ticker, price=price)
+    info = get_stock_info(ticker)
+    print(info)
+    return render_template('stock_info.html', ticker=ticker, info=info)
 
 
 if __name__ == '__main__':

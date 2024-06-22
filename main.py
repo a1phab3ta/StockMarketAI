@@ -103,6 +103,25 @@ def add_stock():
         return redirect(url_for('current_portfolio'))
     return render_template('add_stock.html')
 
+@app.route('/delete_stock', methods=['POST'])
+def delete_stock():
+    ticker = request.form['id']
+    shares_to_delete = int(request.form['shares'])
+    current_shares = int(request.form['current_shares'])
+    
+    conn = sqlite3.connect('myportfolio.db')
+    cursor = conn.cursor()
+    
+    if shares_to_delete >= current_shares:
+        cursor.execute("DELETE FROM portfolio WHERE ticker = ?", (ticker,))
+    else:
+        cursor.execute("UPDATE portfolio SET shares = shares - ? WHERE ticker = ?", (shares_to_delete, ticker))
+    
+    conn.commit()
+    conn.close()
+    return redirect(url_for('current_portfolio'))
+
+
 if __name__ == '__main__':
     con = sqlite3.connect('myportfolio.db') 
     cur=con.cursor()

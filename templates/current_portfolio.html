@@ -10,31 +10,54 @@
           <ul>
             <li><a href="{{ url_for('main') }}">Home</a></li>
             <li><a href="{{ url_for('refresh_model') }}">Refresh Model</a></li>
+            <li><a href="{{ url_for('current_portfolio') }}">Current Portfolio</a></li>
             <li><a href="{{ url_for('top_bearish') }}">Top Bearish</a></li>
             <li><a href="{{ url_for('top_bullish') }}">Top Bullish</a></li>
+            <li><a href="{{ url_for('stock_tickers') }}">Stock Tickers</a></li>
+            <li><a href="{{ url_for('add_stock') }}">Add Stock</a></li>
           </ul>
         </nav>
     </header>
-    <h1>Current Portfolio Page</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Ticker</th>
-                <th># of Shares</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in data %}
+    <div class="container">
+        <h1>Current Portfolio</h1>
+        <table border="1">
+            <thead>
                 <tr>
-                    <td><a href = "stock_info/{{ record[0] }}">{{ record[0] }}</a></td> 
-                    <td>{{ record[1] }}</td>
-                    <td>${{ record[2] }}</td>
+                    <th>Ticker</th>
+                    <th># of Shares</th>
+                    <th>Value</th>
+                    <th>Delete</th>
+                    <th>Add</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h2 style="padding: 4ch;">Total Value of Portfolio: <span style="color: lime;">${{ tot_val }}</span></h2>
+            </thead>
+            <tbody>
+                {% for record in data %}
+                <tr>
+                    <td>{{ record[0] }}</td> 
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td>
+                        <form action="{{ url_for('delete_stock') }}" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="{{ record[0] }}">
+                            <input type="hidden" name="current_shares" value="{{ record[1] }}">
+                            <input type="number" placeholder="# of shares" name="shares" min="1" max="{{ record[1] }}" required>
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('add_stock') }}" method="post" style="display:inline;">
+                            <input type="hidden" name="ticker" value="{{ record[0] }}">
+                            <input type="number" placeholder="# of shares" name="shares" min="1" required>
+                            <input type="submit" value="Add">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <a href = "/add_stock" style="margin-left: 10ch;"><span style="font-size: 26px;">Add a new stock</span></a>
+
 </body>
 </html>
+

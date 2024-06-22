@@ -45,7 +45,16 @@ def refresh_model():
 
 @app.route('/current_portfolio')
 def current_portfolio():
-    return render_template('current_portfolio.html')
+    con = sqlite3.connect('myportfolio.db') 
+    cur=con.cursor()
+    tickers = []
+    shares = []
+    cur.execute("SELECT * FROM portfolio")
+    data = cur.fetchall()
+    for i in data:
+        tickers.append(i[0])
+        shares.append(i[1])
+    return render_template('current_portfolio.html', tickers = tickers, shares = shares)
 
 @app.route('/top_bearish')
 def top_bearish():

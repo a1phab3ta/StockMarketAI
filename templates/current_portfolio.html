@@ -15,5 +15,10 @@
         </nav>
     </header>
     <h1>Current Portfolio Page</h1>
+    <ul>
+        {% for ticker, share in tickers, shares %}
+            <li>{{ ticker }} - {{ share }}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

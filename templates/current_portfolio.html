@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Current Portfolio Page</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
@@ -15,10 +16,22 @@
         </nav>
     </header>
     <h1>Current Portfolio Page</h1>
-    <ul>
-        {% for ticker, share in tickers, shares %}
-            <li>{{ ticker }} - {{ share }}</li>
-        {% endfor %}
-    </ul>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th># of Shares</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in data %}
+                <tr>
+                    <td>{{ record[0] }}</td> 
+                    <td>{{ record[1] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
+    

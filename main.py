@@ -51,10 +51,7 @@ def current_portfolio():
     shares = []
     cur.execute("SELECT * FROM portfolio")
     data = cur.fetchall()
-    for i in data:
-        tickers.append(i[0])
-        shares.append(i[1])
-    return render_template('current_portfolio.html', tickers = tickers, shares = shares)
+    return render_template('current_portfolio.html', data = data)
 
 @app.route('/top_bearish')
 def top_bearish():

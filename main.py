@@ -121,7 +121,13 @@ def delete_stock():
     conn.close()
     return redirect(url_for('current_portfolio'))
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
 if __name__ == '__main__':
     con = sqlite3.connect('myportfolio.db') 
     cur=con.cursor()
@@ -130,3 +136,4 @@ if __name__ == '__main__':
                  shares text NOT NULL)""")
     print("Successfully connected to database!")
     app.run(debug=True)
+    

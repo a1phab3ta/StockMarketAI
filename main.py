@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, request, url_for
 import requests
 from bs4 import BeautifulSoup
 import sqlite3
@@ -86,6 +86,22 @@ def stock_info(ticker):
     print(info)
     return render_template('stock_info.html', ticker=ticker, info=info)
 
+@app.route('/add_stock', methods=['GET', 'POST'])
+def add_stock():
+    if request.method == 'POST':
+        ticker = request.form['ticker']
+        shares = request.form['shares']
+        conn = sqlite3.connect('myportfolio.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM portfolio WHERE ticker = ?", (ticker,))
+        if cursor.fetchone() is None:
+            cursor.execute("INSERT INTO portfolio (ticker, shares) VALUES (?, ?)", (ticker, shares))
+        else:
+            cursor.execute("UPDATE portfolio SET shares = shares + ? WHERE ticker = ?", (shares, ticker))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('current_portfolio'))
+    return render_template('add_stock.html')
 
 if __name__ == '__main__':
     con = sqlite3.connect('myportfolio.db') 

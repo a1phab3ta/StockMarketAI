@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Stock</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('main') }}">Home</a></li>
+            <li><a href="{{ url_for('refresh_model') }}">Refresh Model</a></li>
+            <li><a href="{{ url_for('current_portfolio') }}">Current Portfolio</a></li>
+            <li><a href="{{ url_for('top_bearish') }}">Top Bearish</a></li>
+            <li><a href="{{ url_for('top_bullish') }}">Top Bullish</a></li>
+            <li><a href="{{ url_for('stock_tickers') }}">Stock Tickers</a></li>
+          </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Add Stock to Portfolio</h1>
+        <form action="{{ url_for('add_stock') }}" method="post">
+            <label for="ticker">Stock Ticker:</label><br>
+            <input type="text" id="ticker" name="ticker" required><br><br>
+            <label for="shares">Number of Shares:</label><br>
+            <input type="number" id="shares" name="shares" required><br><br>
+            <input type="submit" value="Add Stock">
+        </form>
+    </div>
+</body>
+</html>

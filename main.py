@@ -2,8 +2,25 @@ from flask import Flask, redirect, render_template, request, url_for
 import requests
 from bs4 import BeautifulSoup
 import sqlite3
+from pymongo import MongoClient
+from marshmallow import Schema, fields, validate
 
+class StockSchema(Schema):
+    ticker = fields.Str(required=True, validate=validate.Length(min=1))
+    shares = fields.Int(required=True, validate=validate.Range(min=1))
 
+class UserSchema(Schema):
+    username = fields.Str(required=True, validate=validate.Length(min=1))
+    password = fields.Str(required=True, validate=validate.Length(min=1))
+    portfolio = fields.List(fields.Nested(StockSchema), required=True)
+
+MONGO_CONNECTION_STRING = "mongodb+srv://pranav:DX62cnA2hE0qsl0U@stockmarket.mvwzddk.mongodb.net/"
+
+client = MongoClient(MONGO_CONNECTION_STRING)
+db = client['UserData']
+users_collection = db['users']
+
+user_schema = UserSchema()
 app = Flask(__name__)
 
 def get_stock_tickers():
